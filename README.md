@@ -17,9 +17,10 @@ There are two parameters in a actuator: change in heading(delta0) and change in 
 
 ### Timestep Length and Elapsed Duration (N & dt)
 I chose
-'''N = 10 
+```
+N = 10 
 dt = 0.1 s
-'''
+```
 
 This means the model will predict the future in 1 second. As used in the class, I started using N = 25 and dt = 0.1 s. Due to the high amount of computations the result were not so good. With N=10 and dt=0.1 s I got very good result.
 

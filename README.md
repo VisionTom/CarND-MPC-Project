@@ -3,6 +3,38 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+### The Model
+For this project a vehicle model was chosen, because a dynamic model has too many parameters. To simplify the physics of a car, the vehicle was treated as a bicycle between the front wheels and back wheels. The parameters were updated as follows:
+```
+      x_[t+1] = x[t] + v[t] * cos(psi[t]) * dt                    //position x
+      y_[t+1] = y[t] + v[t] * sin(psi[t]) * dt                    //position y
+      psi_[t+1] = psi[t] + v[t] / Lf * delta[t] * dt              //heading psi
+      v_[t+1] = v[t] + a[t] * dt                                  //velocity v
+      cte[t+1] = f(x[t]) - y[t] + v[t] * sin(epsi[t]) * dt        //cross track error cte
+      epsi[t+1] = psi[t] - psides[t] + v[t] * delta[t] / Lf * dt  //heading error psi
+```
+There are two parameters in a actuator: change in heading(delta0) and change in velocity(a0). 
+
+### Timestep Length and Elapsed Duration (N & dt)
+I chose
+'''N = 10 
+dt = 0.1 s
+'''
+
+This means the model will predict the future in 1 second. As used in the class, I started using N = 25 and dt = 0.1 s. Due to the high amount of computations the result were not so good. With N=10 and dt=0.1 s I got very good result.
+
+### Polynomial Fitting and MPC Preprocessing
+For consistency, the reference waypoints are transformed to the local coordinate system. Furthermore, the first state is the predicted state in 0.1 second in fact. That is for compensating the latency (0.1s). Here is the formulas I used in transformation.
+```
+ X' =   cos(psi) * (ptsx[i] - x) + sin(psi) * (ptsy[i] - y);
+ Y' =  -sin(psi) * (ptsx[i] - x) + cos(psi) * (ptsy[i] - y);  
+```
+
+Then a 3rd order polynomial is fitted.
+
+---
+
+
 ## Dependencies
 
 * cmake >= 3.5
